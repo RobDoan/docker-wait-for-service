@@ -7,16 +7,17 @@ print-wait-for-usage(){
 wait_for(){
   host=$1
   port=$2
+  echo $host
   if [ -z "$host" ] || [ -z "$port" ]
   then
-    echo "Host And Port is required"
     print-wait-for-usage
     exit 125
   fi
 
-  while !</dev/tcp/$host/$port
+  echo "waiting for ${host} ${port}"
+  while ! nc -w 1 -z $host $port </dev/null
   do
-    echo "waiting ${host} at port ${$port}"
+    echo 'waiting.....'
     sleep 1
   done
 }
